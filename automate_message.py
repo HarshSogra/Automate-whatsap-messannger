@@ -3,6 +3,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+from datetime import datetime, time as dt_time
 import time
 
 driver = webdriver.Chrome()
@@ -18,7 +19,7 @@ WebDriverWait(driver, 120).until(
 
 print("Logged in!")
 
-name = "Harsh Sogra"
+name = "Mineeee"
 msg = "Sorry"
 
 # Search box
@@ -31,12 +32,23 @@ search.send_keys(name)
 time.sleep(2)
 search.send_keys(Keys.ENTER)
 
+# Message loop
 while True:
+    now = datetime.now().time()
+
+    # STOP at 5:30 AM
+    if now >= dt_time(5, 30):
+        print("5:30 AM reached. Stopping automation.")
+        break
+
+    # Send message
     box = driver.find_element(By.XPATH, '//div[@contenteditable="true"][@data-tab="10"]')
     box.send_keys(msg)
     box.send_keys(Keys.ENTER)
 
-    print("Message sent")
-    time.sleep(60)
+    print("Message sent at", datetime.now().strftime("%H:%M:%S"))
 
-input("Press ENTER to exit...")
+    # Wait 8 minutes
+    time.sleep(8 * 60)
+
+driver.quit()
